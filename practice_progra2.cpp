@@ -11,6 +11,7 @@ int main()
     int secretNumber = (randomNumber % 250) + 1;
     int guess;
     int tries = 0;
+    int veryClose
 
     cout << "GUESS MY NUMBER" << endl;
     cout << "Adivina el número en el menor número de intentos posible." << endl;
@@ -23,6 +24,13 @@ int main()
         cin >> guess;
         tries++;
 
+        veryClose = secretNumber - guess 
+
+        if (veryClose <= 5 && >= 5 && veryClose != 0)
+        {
+            cout << "Muy Cerca\n"
+        }
+
         if (guess > secretNumber) {
             cout << "Muy Alto\n\n";
         }
@@ -31,7 +39,6 @@ int main()
         }
         else {
             cout << "Excelente lo hiciste en -- " << tries << "-- intentos";
-
         }
     } while (guess != secretNumber);
 }
