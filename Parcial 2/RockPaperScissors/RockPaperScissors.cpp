@@ -6,7 +6,7 @@ int PCom = 0;
 
 int main()
 {
-    srand(time(NULL));
+    srand(time(0));
     int RPS = (rand() % 3) + 1;
     int RPSHumano;
 
@@ -60,15 +60,15 @@ int main()
             system("cls");
             cout << "Inserte un valor valido la proxima vez.";
         }
-    } while (PJug != 2 || PCom != 2);
+    } while (PJug != 2 && PCom != 2);
 
     if (PJug == 2)
     {
-        cout << "Ganaste el juego!";
+        cout << endl << "Ganaste el juego!";
         system("break");
     }
     else {
-        cout << "Perdiste el juego...";
+        cout << endl << "Perdiste el juego...";
         system("break");
     }
 
