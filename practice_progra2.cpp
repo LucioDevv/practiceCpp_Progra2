@@ -9,12 +9,158 @@ using namespace std;
 int askNumber(string question, int high, int low = 1);
 //GUESS MY NUMBER
 void guessMyNumber();
+
 void vectorsPart1();
 void vectorReserve();
-
+void iterators();
+void iterInventory();
+void guessTheWord();
+void badSwap(int x, int y);
+void goodSwap(int& x, int& y);
 
 
 int main()
+{
+
+    int score1 = 20;
+    int score2 = 100;
+
+    badSwap(score1, score2);
+
+    cout << "Score1: " << score1 << endl;
+    cout << "Score2: " << score2 << endl;
+
+    goodSwap(score1, score2);
+
+    cout << "Score1: " << score1 << endl;
+    cout << "Score2: " << score2 << endl;
+
+}
+
+void badSwap(int x, int y) 
+{
+    int aux = x;
+    x = y;
+    y = aux;
+}
+
+void goodSwap(int& x, int& y) 
+{
+    int aux = x;
+    x = y;
+    y = aux;
+}
+
+void guessTheWord()
+{
+    const int MAX_ATTEMPTS = 3;
+    int attempts = 0;
+
+    vector<string> words;
+    words.push_back("COMPUTADORA");
+    words.push_back("JUEGO");
+    words.push_back("CODIGO");
+    words.push_back("REFRIGERADOR");
+
+    srand(time(NULL));
+    int randomNumber = rand();
+    int wordsRandomIndex = (randomNumber % words.size());
+    string wordSelected = words[wordsRandomIndex];
+
+    //cout << wordSelected << endl;
+
+    random_shuffle(wordSelected.begin(), wordSelected.end());
+    cout << wordSelected << endl;
+
+    string correctWord;
+
+    do
+    {
+        cin >> correctWord;
+        transform(correctWord.begin(), correctWord.end(), correctWord.begin(), ::toupper);
+        //cout << correctWord << endl;
+
+        if (correctWord == words[wordsRandomIndex])
+        {
+            attempts++;
+            cout << "\nAdivinaste la palabra!!!\n";
+            break;
+        }
+        else
+        {
+            attempts++;
+            cout << "Fallaste humano inepto, te quedan " << MAX_ATTEMPTS - attempts << endl;
+        }
+
+    } while (attempts != MAX_ATTEMPTS);
+
+    if (attempts == MAX_ATTEMPTS)
+    {
+        cout << "\nPerdiste, date de baja, la palabra era:  \n";
+        cout << words[wordsRandomIndex];
+    }
+    else
+    {
+        cout << "\nMUY BIEN!! lo hiciste en: " << attempts << " intentos.";
+    }
+
+}
+
+void iterInventory()
+{
+    vector<string> inventory;
+    inventory.push_back("Espada");
+    inventory.push_back("Escudo");
+    inventory.push_back("Martillo");
+    inventory.push_back("Rifle");
+
+    vector<string>::iterator myIterator;
+    vector<string>::const_iterator iter;
+
+    cout << "\nTus Items: \n";
+    for (iter = inventory.begin(); iter != inventory.end(); iter++)
+    {
+        cout << *iter << endl;
+    }
+
+    //Intercambiar
+    cout << "\n Intercambiaste tu " << inventory[2] << " por un arco";
+    myIterator = inventory.begin() + 2;
+    *myIterator = "Arco";
+    cout << "\nTus Items: \n";
+    for (iter = inventory.begin(); iter != inventory.end(); iter++)
+    {
+        cout << *iter << endl;
+    }
+
+
+    //SIZE
+    cout << "\n El nombre del item " << *myIterator << "tiene ";
+    cout << (*myIterator).size() << " letras";
+
+    cout << "\n El nombre del item " << *myIterator << "tiene ";
+    cout << (myIterator)->size() << " letras";
+
+    //INSERT
+    cout << "\n\nRecuperaste la bomba robada ";
+    inventory.insert(inventory.begin() + 2, "bomba");
+    cout << "\nTus Items: \n";
+    for (iter = inventory.begin(); iter != inventory.end(); iter++)
+    {
+        cout << *iter << endl;
+    }
+
+    //DELETE
+    cout << "\nTu " << inventory[1] << " fue destruido en batalla.";
+    inventory.erase(inventory.begin() + 1);
+    cout << "\nTus Items: \n";
+    for (iter = inventory.begin(); iter != inventory.end(); iter++)
+    {
+        cout << *iter << endl;
+    }
+}
+
+void iterators()
 {
     const int NUM_SCORES = 4;
     int score;
@@ -80,11 +226,7 @@ int main()
     {
         cout << *iter << endl;
     }
-
 }
-
-
-
 
 void vectorReserve()
 {
@@ -97,7 +239,6 @@ void vectorReserve()
     cout << "Vector size is: " << scores.size() << endl;
     cout << "Vector capacity is: " << scores.capacity() << endl;
 }
-
 
 void vectorsPart1()
 {
@@ -171,7 +312,6 @@ int askNumber(string question, int high, int low)
 
     return number;
 }
-
 
 void guessMyNumber()
 {
