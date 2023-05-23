@@ -18,33 +18,59 @@ void guessTheWord();
 void badSwap(int x, int y);
 void goodSwap(int& x, int& y);
 
+void display(const vector<string>& vec);
+
 
 int main()
 {
 
-    int score1 = 20;
-    int score2 = 100;
+    const int ROWS = 11;
+    const int COLUMNS = 11;
 
-    badSwap(score1, score2);
 
-    cout << "Score1: " << score1 << endl;
-    cout << "Score2: " << score2 << endl;
+    for (int i = 0; i < ROWS; i++) {
 
-    goodSwap(score1, score2);
 
-    cout << "Score1: " << score1 << endl;
-    cout << "Score2: " << score2 << endl;
+
+        for (int j = 0; j < COLUMNS; j++) {
+
+            if (j == 0 || j == COLUMNS - 1)
+            {
+                cout << " 1 ";
+            } else if (i == 0 || i == ROWS - 1)
+            {
+                cout << " 1 ";
+            }
+            else {
+                if (j == i)
+                {
+                    cout << " 1 ";
+                }
+                else if (j == COLUMNS - 1 - i)
+                {
+                    cout << " 1 ";
+                }
+                else {
+                    cout << " * ";
+                }
+            }
+
+
+
+        }
+        cout << endl;
+    }
 
 }
 
-void badSwap(int x, int y) 
+void badSwap(int x, int y)
 {
     int aux = x;
     x = y;
     y = aux;
 }
 
-void goodSwap(int& x, int& y) 
+void goodSwap(int& x, int& y)
 {
     int aux = x;
     x = y;
