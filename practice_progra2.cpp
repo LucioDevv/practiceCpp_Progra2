@@ -16,14 +16,161 @@ void vectorReserve();
 void iterators();
 void iterInventory();
 void guessTheWord();
+void TicTacToe();
+
+//Exam P2
+string GetRandomItem(vector<string>& items);
+void DisplayInventory(vector<string>& inventory);
+bool AskYesNo(string question);
+void ShowMenu();
+
+const int MAX_ITEMS = 6;
+const int SPACE_COST = 6;
+int FREE_ITEMS = 3;
+unsigned int gems = 8;
+
 void badSwap(int x, int y);
 void goodSwap(int& x, int& y);
 
 void display(const vector<string>& vec);
 
 
+
 int main()
 {
+
+
+    std::setlocale(LC_ALL, "es_ES.UTF-8");
+
+    //Items
+    vector<string> items = { "espada", "martillo", "bomba", "escudo" };
+
+    //inventory
+    vector<string> inventory;
+    inventory.reserve(MAX_ITEMS);
+    vector<string>::const_iterator iter;
+    bool isContinue;
+
+    do {
+        cout << "\n--INVENTARIO---\n";
+        cout << "Gemas: " << gems << endl;
+
+        string itemFound = GetRandomItem(items);
+
+        cout << "Has encontrado un(a) " << itemFound << "!!\n";
+
+        if (inventory.size() >= FREE_ITEMS)
+        {
+            ShowMenu();
+            int option = askNumber("\nElige un número ", 3);
+
+            do {
+
+                if (option == 1 || option == 2 || option == 3) {
+
+                    switch (option)
+                    {
+                    case 1:
+                        //ReplaceItem();
+                        break;
+                    case 3:
+                        BuySpacee();
+                        break;
+                    default:
+                        break;
+                    }
+
+                }
+                else {
+                    cout << "Inserte una opcion valida.";
+                }
+            } while (option != 1 && option != 2 && option != 3);
+
+
+        }
+        else
+        {
+            inventory.push_back(itemFound);
+        }
+
+
+
+        //DisplayItems
+        DisplayInventory(inventory);
+
+        isContinue = AskYesNo("¿Seguir explorando?");
+
+    } while (isContinue);
+
+    cout << "\nVuelve pronto!!\n";
+
+}
+
+string GetRandomItem(vector<string>& items)
+{
+    srand(time(NULL));
+    int itemRandomIndex = (rand() % items.size());
+    string itemSelected = items[itemRandomIndex];
+
+    return itemSelected;
+}
+
+void DisplayInventory(vector<string>& inventory)
+{
+    vector<string>::const_iterator iter;
+    int i = 0;
+    cout << "\n--Tus items--\n";
+    for (iter = inventory.begin(); iter != inventory.end(); iter++)
+    {
+        cout << i << "_" << *iter << endl;
+        i++;
+    }
+
+}
+
+bool AskYesNo(string question)
+{
+    char answer;
+
+    do {
+        cout << "\n" << question << "(y/n)";
+        cin >> answer;
+    } while (answer != 'y' && answer != 'n');
+
+    if (answer == 'y')
+    {
+        return true;
+    }
+
+    return false;
+}
+
+void ShowMenu()
+{
+    cout << "\nYa no tienes espacio para más objetos, que te gustaría hacer:\n";
+    cout << "\n1. Reemplazar objeto.";
+    cout << "\n2. Continuar sin el objeto.";
+    cout << "\n3. Añadir un espacio por " << SPACE_COST << " gemas.";
+}
+
+void BuySpacee() {
+
+    if (gems < SPACE_COST) {
+        cout << "No tiene suficiente gemas.";
+    }
+    else if (FREE_ITEMS == MAX_ITEMS) {
+        cout << "Ya compro el maximo espacio!";
+    }
+    else {
+        cout << "Gastando " << SPACE_COST << " gemas para mejorar tu inventario!" << endl;
+        gems = gems - SPACE_COST;
+        FREE_ITEMS = FREE_ITEMS + 1;
+    }
+}
+
+
+void TicTacToe() {
+
     const int ROWS = 3;
     const int COLUMNS = 3;
     int playerTurn = 0;
