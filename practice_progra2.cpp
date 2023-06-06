@@ -3,22 +3,26 @@
 #include <vector>
 #include <algorithm>
 #include <cstdlib>
+#include <clocale>
 
 using namespace std;
 
 int askNumber(string question, int high, int low = 1);
+
 //GUESS MY NUMBER
 void guessMyNumber();
 
+void TictactoePart1();
 void MatrixBox();
+void guessTheWord();
 void vectorsPart1();
 void vectorReserve();
 void iterators();
 void iterInventory();
-void guessTheWord();
-void TicTacToe();
 
 //Exam P2
+void BuySpace(vector<string>& inventory, unsigned int& gems, string itemFound);
+void ReplaceItem(vector<string>& inventory, string itemFound);
 string GetRandomItem(vector<string>& items);
 void DisplayInventory(vector<string>& inventory);
 bool AskYesNo(string question);
@@ -26,21 +30,18 @@ void ShowMenu();
 
 const int MAX_ITEMS = 6;
 const int SPACE_COST = 6;
-int FREE_ITEMS = 3;
-unsigned int gems = 8;
+const int FREE_ITEMS = 3;
 
+//References
 void badSwap(int x, int y);
 void goodSwap(int& x, int& y);
 
 void display(const vector<string>& vec);
 
-
-
 int main()
 {
-
-
     std::setlocale(LC_ALL, "es_ES.UTF-8");
+    unsigned int gems = 8;
 
     //Items
     vector<string> items = { "espada", "martillo", "bomba", "escudo" };
@@ -64,29 +65,17 @@ int main()
             ShowMenu();
             int option = askNumber("\nElige un número ", 3);
 
-            do {
-
-                if (option == 1 || option == 2 || option == 3) {
-
-                    switch (option)
-                    {
-                    case 1:
-                        //ReplaceItem();
-                        break;
-                    case 3:
-                        BuySpacee();
-                        break;
-                    default:
-                        break;
-                    }
-
-                }
-                else {
-                    cout << "Inserte una opcion valida.";
-                }
-            } while (option != 1 && option != 2 && option != 3);
-
-
+            switch (option)
+            {
+            case 1:
+                ReplaceItem(inventory, itemFound);
+                break;
+            case 3:
+                BuySpace(inventory, gems, itemFound);
+                break;
+            default:
+                break;
+            }
         }
         else
         {
@@ -105,6 +94,32 @@ int main()
     cout << "\nVuelve pronto!!\n";
 
 }
+
+void BuySpace(vector<string>& inventory, unsigned int& gems, string itemFound)
+{
+    if (gems >= SPACE_COST)
+    {
+        cout << "\n Espacio comprado con éxito!!\n";
+        inventory.push_back(itemFound);
+        gems -= SPACE_COST;
+    }
+    else
+    {
+        cout << "\nNo tienes gemas suficientes!!\n";
+    }
+}
+
+void ReplaceItem(vector<string>& inventory, string itemFound)
+{
+    vector<string>::iterator iter;
+    int itemChosen = 0;
+    cout << "\n¿Qué item deseas reemplazar?\n";
+    DisplayInventory(inventory);
+    cin >> itemChosen;
+    iter = inventory.begin() + itemChosen;
+    *iter = itemFound;
+}
+
 
 string GetRandomItem(vector<string>& items)
 {
@@ -153,219 +168,122 @@ void ShowMenu()
     cout << "\n3. Añadir un espacio por " << SPACE_COST << " gemas.";
 }
 
-void BuySpacee() {
 
-    if (gems < SPACE_COST) {
-        cout << "No tiene suficiente gemas.";
-    }
-    else if (FREE_ITEMS == MAX_ITEMS) {
-        cout << "Ya compro el maximo espacio!";
-    }
-    else {
-        cout << "Gastando " << SPACE_COST << " gemas para mejorar tu inventario!" << endl;
-        gems = gems - SPACE_COST;
-        FREE_ITEMS = FREE_ITEMS + 1;
-    }
-}
-
-
-void TicTacToe() {
-
+void TictactoePart1()
+{
     const int ROWS = 3;
     const int COLUMNS = 3;
-    int playerTurn = 0;
-    bool winAchieved = false;
-    int playerInput;
 
-    char board[ROWS][COLUMNS] = { {' ', ' ', ' '},
-                                  {' ', ' ', ' '},
-                                  {' ', ' ', ' '} };
+    char board[ROWS][COLUMNS] = { {'O', 'X', 'O'},
+                                  {' ', 'X', 'X'},
+                                  {'X', 'O', 'O'} };
 
-    char exampleBoard[ROWS][COLUMNS] = { {'0', '1', '2'},
-                                         {'3', '4', '5'},
-                                         {'6', '7', '8'} };
 
-    cout << endl << "You are X!" << endl;
-
-    do {
-
-        if (playerTurn == 0) {
-            cout << "---TIC TAC TOE---" << endl;
-            for (int i = 0; i < ROWS; i++) {
-
-                for (int j = 0; j < COLUMNS; j++) {
-                    cout << board[i][j] << "   ";
-                }
-                cout << endl;
-
-            }
-
-            cout << endl << "Where would you like to place your X? (0 - 8)" << endl;
-            for (int i = 0; i < ROWS; i++) {
-
-                for (int j = 0; j < COLUMNS; j++) {
-                    cout << exampleBoard[i][j] << "   ";
-                }
-                cout << endl;
-
-            }
-            cin >> playerInput;
-
-            if (playerInput >= 0 && playerInput <= 2) {
-                if (board[0][playerInput] == ' ') {
-                    board[0][playerInput] = 'X';
-                    playerTurn = 1;
-                }
-                else {
-                    cout << "Ya hay un simbolo alli, intente otro." << endl;
-                    playerTurn = 0;
-                }
-            }
-            else if (playerInput >= 3 && playerInput <= 5) {
-                playerInput = playerInput - 3;
-                if (board[1][playerInput] == ' ') {
-                    board[1][playerInput] = 'X';
-                    playerTurn = 1;
-                }
-                else {
-                    cout << "Ya hay un simbolo alli, intente otro." << endl;
-                    playerTurn = 0;
-                }
-            }
-            else if (playerInput >= 6 && playerInput <= 8) {
-                playerInput = playerInput - 6;
-                if (board[2][playerInput] == ' ') {
-                    board[2][playerInput] = 'X';
-                    playerTurn = 1;
-                }
-                else {
-                    cout << "Ya hay un simbolo alli, intente otro." << endl;
-                    playerTurn = 0;
-                }
-            }
-            else {
-                cout << "Inserte un valor valido." << endl;
-                playerTurn = 0;
-            }
-        }
-        else {
-            cout << "---TIC TAC TOE---" << endl;
-            for (int i = 0; i < ROWS; i++) {
-
-                for (int j = 0; j < COLUMNS; j++) {
-                    cout << board[i][j] << "   ";
-                }
-                cout << endl;
-
-            }
-
-            cout << endl << "Where would you like to place your O? (0 - 8)" << endl;
-            for (int i = 0; i < ROWS; i++) {
-
-                for (int j = 0; j < COLUMNS; j++) {
-                    cout << exampleBoard[i][j] << "   ";
-                }
-                cout << endl;
-
-            }
-            cin >> playerInput;
-
-            if (playerInput >= 0 && playerInput <= 2) {
-                if (board[0][playerInput] == ' ') {
-                    board[0][playerInput] = 'O';
-                    playerTurn = 0;
-                }
-                else {
-                    cout << "Ya hay un simbolo alli, intente otro." << endl;
-                    playerTurn = 1;
-                }
-            }
-            else if (playerInput >= 3 && playerInput <= 5) {
-                playerInput = playerInput - 3;
-                if (board[1][playerInput] == ' ') {
-                    board[1][playerInput] = 'O';
-                    playerTurn = 0;
-                }
-                else {
-                    cout << "Ya hay un simbolo alli, intente otro." << endl;
-                    playerTurn = 1;
-                }
-            }
-            else if (playerInput >= 6 && playerInput <= 8) {
-                playerInput = playerInput - 6;
-                if (board[2][playerInput] == ' ') {
-                    board[2][playerInput] = 'O';
-                    playerTurn = 0;
-                }
-                else {
-                    cout << "Ya hay un simbolo alli, intente otro." << endl;
-                    playerTurn = 1;
-                }
-            }
-            else {
-                cout << "Inserte un valor valido." << endl;
-                playerTurn = 1;
-            }
+    cout << "---TIC TAC TOE---\n";
+    for (int i = 0; i < ROWS; i++)
+    {
+        for (int j = 0; j < COLUMNS; j++)
+        {
+            cout << board[i][j];
         }
 
-    } while (winAchieved == false);
+        cout << endl;
+    }
 
+    board[1][1] = 'X';
+
+    cout << "---TIC TAC TOE---\n";
+    for (int i = 0; i < ROWS; i++)
+    {
+        for (int j = 0; j < COLUMNS; j++)
+        {
+            cout << board[i][j];
+        }
+
+        cout << endl;
+    }
+
+    cout << "\nX wins!!\n";
 }
 
-void MatrixBox() {
-
-    const int ROWS = 11;
-    const int COLUMNS = 11;
-
-
-    for (int i = 0; i < ROWS; i++) {
+void MatrixBox()
+{
+    const int HIGHT_WIDTH = 30;
 
 
-
-        for (int j = 0; j < COLUMNS; j++) {
-
-            if (j == 0 || j == COLUMNS - 1)
+    for (int i = 0; i < HIGHT_WIDTH; i++)
+    {
+        for (int j = 0; j < HIGHT_WIDTH; j++)
+        {
+            int sumij = i + j;
+            if (i == 0 || j == 0 || i == HIGHT_WIDTH - 1 || j == HIGHT_WIDTH - 1
+                || i == j || sumij == HIGHT_WIDTH - 1)
             {
                 cout << " 1 ";
             }
-            else if (i == 0 || i == ROWS - 1)
+            else
             {
-                cout << " 1 ";
+                cout << " . ";
             }
-            else {
-                if (j == i)
-                {
-                    cout << " 1 ";
-                }
-                else if (j == COLUMNS - 1 - i)
-                {
-                    cout << " 1 ";
-                }
-                else {
-                    cout << " * ";
-                }
-            }
-
-
 
         }
-        cout << endl;
+        cout << "\n";
     }
 }
 
+void inventoryDisplay()
+{
+    vector<string> inventory;
+
+    inventory.push_back("sword");
+    inventory.push_back("armor");
+    inventory.push_back("gun");
+
+    display(inventory);
+}
+void display(const vector<string>& vec)
+{
+    vector<string>::const_iterator iter;
+    for (iter = vec.begin(); iter != vec.end(); iter++)
+    {
+        cout << *iter << endl;
+    }
+}
+
+
+//Swap references
+void swap()
+{
+    int score1 = 20;
+    int score2 = 100;
+
+    //BAD SWAP
+    badSwap(score1, score2);
+
+    cout << "Score1: " << score1 << endl;
+    cout << "Score2: " << score2 << endl;
+
+    //GOOD SWAP
+    goodSwap(score1, score2);
+
+    cout << "Score1: " << &score1 << endl;
+    cout << "Score2: " << &score2 << endl;
+}
 void badSwap(int x, int y)
 {
-    int aux = x;
-    x = y;
-    y = aux;
+    int aux = x; // aux = 20
+    x = y; // x = 100;
+    y = aux; // y = 20;
 }
 
 void goodSwap(int& x, int& y)
 {
-    int aux = x;
-    x = y;
-    y = aux;
+    int aux = x; // aux = 20
+    x = y; // x = 100;
+    y = aux; // y = 20;
 }
+
+
 
 void guessTheWord()
 {
@@ -619,14 +537,41 @@ void vectorsPart1()
 
 int askNumber(string question, int high, int low)
 {
-    int number = 0;
+    string input;
+    bool isValid = false;
+    //int number = 0;
 
     do {
         cout << question << "entre " << low << " y " << high << endl;
-        cin >> number;
-    } while (number > high || number < low);
+        getline(cin, input);
 
-    return number;
+        for (char c : input)
+        {
+            if (!isdigit(c))
+            {
+                isValid = false;
+                break;
+            }
+            else {
+                if (stoi(input) <= 3 && stoi(input) >= 1) {
+                    isValid = true;
+                    break;
+                }
+                else {
+                    isValid = false;
+                    break;
+                }
+            }
+        }
+
+        if (!isValid)
+        {
+            cout << "\nEntrada inválida, por favor elige solo números.\n";
+        }
+    } while (!isValid || input.empty());
+
+    //number > high || number < low
+    return stoi(input);
 }
 
 void guessMyNumber()
