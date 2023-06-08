@@ -550,6 +550,7 @@ int askNumber(string question, int high, int low)
             if (!isdigit(c))
             {
                 isValid = false;
+                cout << "\nEntrada inválida, por favor elige solo números.\n";
                 break;
             }
             else {
@@ -559,6 +560,7 @@ int askNumber(string question, int high, int low)
                 }
                 else {
                     isValid = false;
+                    cout << "\nEntrada inválida, por favor elige solo números DENTRO del rango.\n";
                     break;
                 }
             }
@@ -566,7 +568,7 @@ int askNumber(string question, int high, int low)
 
         if (!isValid)
         {
-            cout << "\nEntrada inválida, por favor elige solo números.\n";
+
         }
     } while (!isValid || input.empty());
 
