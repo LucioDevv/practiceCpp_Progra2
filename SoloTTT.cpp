@@ -7,13 +7,22 @@
 
 using namespace std;
 
+char winner(const vector<char>& board);
+const int NUM_SQUARES = 9;
+const char EMPTY = ' ';
+const int ROWS = 3;
+const int COLUMNS = 3;
+const char NO_ONE = 'N';
+const char TIE = 'T';
+
 int main()
 {
-    const int ROWS = 3;
-    const int COLUMNS = 3;
     int playerTurn = 0;
     bool winAchieved = false;
     int playerInput;
+   
+
+
 
 
     char board[ROWS][COLUMNS] = { {' ', ' ', ' '},
@@ -26,7 +35,7 @@ int main()
 
     cout << endl << "You are X!" << endl;
 
-    do {
+    while (winner(board) == NO_ONE); {
 
         if (playerTurn == 0) {
             cout << "---TIC TAC TOE---" << endl;
@@ -147,6 +156,40 @@ int main()
             }
         }
 
-    } while (winAchieved == false);
+    } 
 
+}
+
+//Return the piece winner a tie or noBody
+char winner(const vector<char>& board)
+{
+    //This are the posibilities to win
+    const int WINNING_POS[8][3] = { {0, 1, 2}, //Horizontal
+                                    {3, 4, 5}, //Horizontal
+                                    {6, 7, 8}, //Horizontal
+                                    {0, 3, 6}, //Vertical
+                                    {1, 4, 7}, //Vertical
+                                    {2, 5, 8}, //Vertical
+                                    {2, 4, 6}, //Horizontal
+                                    {0, 4, 8} }; //Horizontal
+    const int TOTAL_ROWS = 8;
+
+    //Return the winner
+    for (int row = 0; row < TOTAL_ROWS; row++)
+    {
+        if ((board[WINNING_POS[row][0]] != EMPTY) &&
+            (board[WINNING_POS[row][0]] == board[WINNING_POS[row][1]]) &&
+            (board[WINNING_POS[row][1]] == board[WINNING_POS[row][2]]))
+        {
+            return board[WINNING_POS[row][0]];
+        }
+    }
+
+    //Return a Tie
+    if (count(board.begin(), board.end(), EMPTY) == 0) {
+        return TIE;
+    }
+
+    //Return that no one is the winner yet
+    return NO_ONE;
 }
