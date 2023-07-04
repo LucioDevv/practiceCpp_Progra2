@@ -40,7 +40,59 @@ void display(const vector<string>& vec);
 
 int main()
 {
-    const int ROWS = 3;
+    std::setlocale(LC_ALL, "es_ES.UTF-8");
+
+    int score = 1000;
+    int* pScore = &score;
+
+    cout << &score << endl;
+    cout << pScore << endl;
+
+    cout << score << endl;
+    cout << *pScore << endl;
+
+    score += 500;
+
+    cout << score << endl;
+    cout << *pScore << endl;
+
+    int newScore = 5000;
+    pScore = &newScore;
+
+    cout << &newScore << endl;
+    cout << pScore << endl;
+
+    cout << newScore << endl;
+    cout << *pScore << endl;
+
+    string str = "score";
+    string* pStr = &str;
+
+    cout << str << endl;
+    cout << *pStr << endl;
+
+    cout << str.size() << endl;
+    cout << (*pStr).size() << endl;
+    cout << pStr->size() << endl;
+
+    int lives = 5;
+    int* const pLives = &lives;
+
+    const int* pNumber;
+
+    int defense = 32;
+    pNumber = &defense;
+
+    defense *= 2;
+
+    cout << defense << endl;
+    cout << *pNumber << endl;
+
+
+}
+
+void TTT() {
+        const int ROWS = 3;
     const int COLUMNS = 3;
     int playerTurn = 0;
     bool winAchieved = false;
@@ -179,7 +231,6 @@ int main()
         }
 
     } while (winAchieved == false);
-
 }
 
 void ExamenP2() {
